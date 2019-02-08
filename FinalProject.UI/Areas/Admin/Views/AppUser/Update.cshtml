@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+@using FinalProject.Core.Core.Entity.Enum
+@model FinalProject.Dto.DTO.AppUserDTO.AppUserUpdate
+@*<form enctype="multipart/form-data" method="post" action="~/Admin/Appuser/add"></form>*@
+@using (Html.BeginForm("Update", "AppUser", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <img src="@Model.ImagePath" width="330" class="img-rounded" />
+        <div class="form-group">
+            <label for="Image">Fotoğraf Seçiniz</label>
+            <input type="file" name="Image" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(user => user.Name)
+        @Html.TextBoxFor(user => user.Name, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(user => user.LastName)
+        @Html.TextBoxFor(user => user.LastName, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(user => user.PhoneNumber)
+        @Html.TextBoxFor(user => user.PhoneNumber, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(user => user.Email)
+        @Html.TextBoxFor(user => user.Email, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(user => user.UserName)
+        @Html.TextBoxFor(user => user.UserName, new { @class = "form-control", required = "required" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(user => user.Password)
+        @Html.TextBoxFor(user => user.Password, new { @class = "form-control", required = "required" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(user => user.Address)
+        @Html.TextBoxFor(user => user.Address, new { @class = "form-control", required = "required" })
+    </div>
+    var BirthDate = Model.Birthdate.ToString("dd.MM.yyyy");
+    <div class="form-group">
+        @Html.LabelFor(user => user.Birthdate)
+        @Html.TextBoxFor(model => BirthDate, new { @class = "form-control" ,@id = "datepicker" } )
+    </div>
+    @Html.HiddenFor(x => x.ID)
+
+
+    <input type="submit" value="Güncelle" class="form-control btn btn-primary" />
+}
+<br />
+
+<div>
+    @Html.ActionLink("Listeye Dön", "List", null, new { @class = "form-control btn btn-warning" })
+</div>
+
+@section scripts {
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+
+
+        $(function () {
+            $("#datepicker").datepicker({
+                changeYear: true,
+                yearRange: '1950:2030',
+                monthNames: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+                dayNamesMin: ["Pa", "Pt", "Sl", "Ça", "Pe", "Cu", "Ct"],
+                dateFormat: 'dd.mm.yy'
+            }).val();
+        });
+    </script>
+}

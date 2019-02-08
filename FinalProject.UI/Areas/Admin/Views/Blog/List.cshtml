@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@using FinalProject.Dto.DTO.BlogDTO;
+@model IPagedList<BlogList>
+
+<h2>Blog Listesi</h2>
+<hr />
+<p>
+    @Html.ActionLink("Yeni Blog Ekle", "Add", null, new { @class = "btn btn-primary" })
+</p>
+<hr />
+
+
+<table class="table table-bordered table-hover table-striped">
+    <tr>
+        <th>
+            Kategori Adı
+        </th>
+        <th>
+            Başlık
+        </th>
+        <th>
+            İçerik
+        </th>
+        <th>
+            Açıklama
+        </th>
+        <th>
+            Eklenme Tarihi
+        </th>
+        <th>
+            Güncellenme Tarihi
+        </th>
+        <th>
+            Onay
+        </th>
+        <th>
+            Anasayfa
+        </th>
+        <th style="width:150px;"></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(x => item.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Header)
+            </td>
+            <td>
+                @Html.DisplayFor(x => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(x => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(x => item.ModifiedDate)
+            </td>
+            <td>
+                @if (item.Confirmation)
+                {
+                    <label class="label label-success">Approved</label>
+                }
+                else
+                {
+                    <label class="label label-danger">Not Approved</label>
+                }
+            </td>
+            <td>
+                @if (item.Homepage)
+                {
+                    <label class="label label-success">Homepage</label>
+                }
+                else
+                {
+                    <label class="label label-danger">Not Homepage</label>
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Update", new { id = item.ID }, new { @class = "btn btn-warning btn-xs" })<br />
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID }, new { @class = "btn btn-danger btn-xs" })<br />
+                @Html.ActionLink("Detail","Detail",new { id = item.ID},new {@class = "btn btn-success btn-xs" })
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="pagedList">
+    @Html.PagedListPager(Model, page => Url.Action("List", "Blog", new { page }), PagedListRenderOptions.TwitterBootstrapPager)
+</div>
+
+
+

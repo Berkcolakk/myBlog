@@ -1,0 +1,81 @@
+﻿<div class="col-md-3">
+    <div class="about">
+        <div class="my-pic">
+            <img src="~/Content/Homepage Content/MyImage/WhatsApp Image 2018-08-08 at 1.35.10 AM.jpeg" alt="">
+            <a href="javascript:void(0)" class="collapsed" data-target="#menu" data-toggle="collapse"><i class="icon-menu menu"></i></a>
+            <div id="menu" class="collapse">
+                <ul class="menu-link">
+                    <li><a href="/Home/Index">Anasayfa</a></li>
+                    <li><a href="/Home/Index">Hakkımda</a></li>
+                    <li><a href="/Home/Index">Iletişim</a></li>
+                    @if (!HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+                        <li><a href="/Account/Login">Giriş Yap</a></li>
+                        <li><a href="/Account/Register">Kayıt Ol</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="/Member/AppUser/AccountSetting">Kullanıcı Ayarları</a></li>
+                        <li><a href="/Account/LogOut">Çıkış Yap</a></li>
+
+                    }
+                </ul>
+            </div>
+        </div>
+
+
+
+        <div class="my-detail" data-ng-app="App" data-ng-controller="myCtrl">
+
+            <div class="white-spacing">
+                <h1>Berk Çolak</h1>
+                <span>Web Developer</span>
+            </div>
+            <div ng-view style="margin-left:60px;">
+                <table>
+                    <tr>
+                        <th>
+                            <h3>
+                                Kategoriler
+                            </h3>
+                        </th>
+                    </tr>
+                    <tbody>
+                        <tr data-ng-repeat="data in List">
+                            <td>
+                                <h5><a style="color:gray;" href="/Home/BlogCatList/{{data.ID}}">{{data.Name}}</a></h5>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <ul class="social-icon">
+                <li><a href="https://www.linkedin.com/in/berk-colak/" target="_blank" class="linkedin"><i class="fa fa-linkedin"></i></a></li>
+                <li><a href="https://github.com/Berkcolakk/" target="_blank" class="github"><i class="fa fa-github"></i></a></li>
+                <li><a href="https://www.instagram.com/berkcolakkkk/" target="_blank" class="instagram"><i class="fa fa-instagram"></i></a></li>
+
+            </ul>
+
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/angular.min.js"></script>
+<script>
+    var App = angular.module("App", []);
+
+
+App.controller("myCtrl", function ($scope, $http) {
+
+    var Success = function (response) {
+        $scope.List = response.data;
+    }
+    var error = function (response) {
+        console.log(response);
+    }
+    $http({
+        method: "GET",
+        url: "/Home/Kategoriler"
+    }).then(Success, error)
+});
+
+</script>

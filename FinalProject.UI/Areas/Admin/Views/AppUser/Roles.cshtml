@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Roles";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@using FinalProject.Core.Core.Entity.Enum
+@model FinalProject.Dto.DTO.AppUserDTO.AppUserRoles
+
+@*<form enctype="multipart/form-data" method="post" action="~/Admin/Appuser/add"></form>*@
+@using (Html.BeginForm("Roles", "AppUser", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(user => user.Roles)
+        <select name="Roles" class="form-control">
+            @foreach (var item in Enum.GetNames(typeof(Role)))
+            {
+                <option  value="@item">@item</option>
+            }
+        </select>
+    </div>
+
+
+    <input type="submit" value="Güncelle" class="form-control btn btn-primary" />
+}
+<br />
+    <div>
+        @Html.ActionLink("Listeye Dön", "List", null, new { @class = "form-control btn btn-warning" })
+    </div>

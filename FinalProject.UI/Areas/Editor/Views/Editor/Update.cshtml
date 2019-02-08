@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Editor/Views/Shared/_Layout.cshtml";
+}
+@model FinalProject.Dto.DTO.BlogDTO.BlogUpdate
+@*<form enctype="multipart/form-data" method="post" action="~/Admin/Appuser/add"></form>*@
+@using (Html.BeginForm("Update", "Editor", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <img src="@Model.Image" width="330" class="img-rounded" />
+        <div class="form-group">
+            <label for="Image">Fotoğraf Seçiniz</label>
+            <input type="file" name="Image" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(user => user.Header)
+        @Html.TextBoxFor(user => user.Header, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(user => user.Content)
+        @Html.TextBoxFor(user => user.Content, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(user => user.Description)
+        @Html.TextBoxFor(user => user.Description, new { @class = "form-control" })
+    </div>
+    <div class="custom-checkbox">
+        @Html.LabelFor(user => user.Confirmation)
+        @Html.EditorFor(user => user.Confirmation, new { @class = "form-control" })
+    </div>
+    <div class="custom-checkbox">
+        @Html.LabelFor(user => user.Homepage)
+        @Html.EditorFor(user => user.Homepage, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label class="control-label col-md-2">Kategori Adı</label>
+        <select name="CategoryID" class="form-control">
+            @foreach (var item in TempData["KategoriListesi"] as List<FinalProject.Dto.DTO.CategoryDTO.CategoryList>)
+            {
+                <option value="@item.ID">@item.Name</option>
+            }
+        </select>
+    </div>
+    @Html.HiddenFor(x => x.ID)
+    @Html.HiddenFor(x => x.CategoryID)
+
+
+    <input type="submit" value="Güncelle" class="form-control btn btn-primary" />
+}
+<br />
+
+<div>
+    @Html.ActionLink("Listeye Dön", "List", null, new { @class = "form-control btn btn-warning" })
+</div>
+

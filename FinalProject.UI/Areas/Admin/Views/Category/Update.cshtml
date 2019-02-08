@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@model FinalProject.Dto.DTO.CategoryDTO.CategoryUpdate
+@*<form enctype="multipart/form-data" method="post" action="~/Admin/Appuser/add"></form>*@
+@using (Html.BeginForm("Update", "Category", FormMethod.Post))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(user => user.Name)
+        @Html.TextBoxFor(user => user.Name, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(user => user.Description)
+        @Html.TextBoxFor(user => user.Description, new { @class = "form-control" })
+    </div>
+    @Html.HiddenFor(x => x.ID)
+
+
+    <input type="submit" value="Güncelle" class="form-control btn btn-primary" />
+}
+<br />
+
+
+<div>
+    @Html.ActionLink("Listeye Dön", "List", null, new { @class = "form-control btn btn-warning" })
+</div>
+
+
+
+
+

@@ -1,0 +1,166 @@
+﻿@model FinalProject.Dto.DTO.BlogDTO.BlogDetail
+@{
+    ViewBag.Title = "Makale Detay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="col-md-9">
+    <div class="col-md-12 page-body">
+        <div class="row">
+
+
+            <div class="sub-title">
+                <a href="/Home/Index" title="Anasayfa"><h2>Anasayfa'ya Dön</h2></a>
+                <a href="#comment" class="smoth-scroll"><i class="icon-bubbles"></i></a>
+            </div>
+
+
+            <div class="col-md-12 content-page">
+                <div class="col-md-12 blog-post">
+                    <!-- Post Headline Start -->
+                    <div class="post-title">
+                        <h1>@Model.Header</h1>
+                        <p>@Model.Description</p>
+                        <label class="fa fa-comment pull-left" id="CommentCount"> Yorum Sayısı : @Model.Comments.Count()</label> <br />
+                        <label class="fa fa-book pull-left" id="ReadNumber"> Okunma Sayısı : @Model.ReadNumber</label>
+
+
+                        <!-- Post Headline End -->
+                        <!-- Post Detail Start -->
+                        <!-- Post Image Start -->
+                        <div class="post-image margin-top-40 margin-bottom-40">
+                            <img src="@Model.Image" width="500" height="300" alt="">
+                            <!-- Post Image End -->
+                            <div class="post-info">
+                                <span>@Model.CreatedDate.ToShortDateString()  <a href="#" target="_blank"></a></span>
+                                <!-- Post Detail End -->
+                                @Html.Raw(@Model.Content)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <label id="showLikes" class="fa fa-heart fa-2x pull-right" style="color:red;">@Model.Likes</label>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <button href="javascript:void(0)" id="like" type="submit" class="btn btn-primary pull-right">Bu Makaleyi Beğen!</button>
+                }
+                else
+                {
+                    <h6 class="pull-right">Beğenebilmek İçin Giriş Yapınız.! <a href="/Account/Login">Giriş İçin Tıklayınız.!</a></h6>
+                }
+            </div>
+            <hr />
+            <div class="card my-4">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <h5 class="card-header">Yorum Yap :</h5>
+                    <div class="card-body">
+                        <form id="form" action="" method="post" onsubmit="return false">
+                            <div class="form-group">
+                                <textarea class="form-control" id="Comments" name="Comments" rows="5"></textarea>
+                                <input type="hidden" name="BlogID" value="@Model.ID" />
+                            </div>
+                            <button type="submit" id="YorumYap" class="btn btn-primary">Yorun Yap </button>
+                        </form>
+                        <hr />
+                        <br />
+                    </div>
+                }
+                else
+                {
+                    <h5>Yorum Yapabilmek İçin Giriş Yapınız.! <a href="/Account/Login">Giriş İçin Tıklayınız.!</a></h5>
+                }
+
+
+
+                <div class="col-lg-8 col-md-10 mx-auto" onload="$.BlogApp.List()">
+                    <div class="media mb-4" id="AppendComment">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            $.BlogApp.List()
+        }, 500)
+
+        $.BlogApp = {
+
+            Like :   $("#like").click(function () {
+            var id = '@Model.ID';
+
+            $.ajax({
+                type:"Post",
+                dataType:"Json",
+                url:"@Url.Action("AddLike", "Home")/"+id,
+                success:function (response) {
+                    if (response.isSuccess==true) {
+                        $("#message").removeAttr("style");
+
+                    }
+                    $("#message").text(response.userMessage);
+                    $("#showLikes").text(response.Likes);
+
+                    setTimeout(function () {
+                        $("#message").slideUp(1000);
+                    },2000)
+                }
+            })
+        }),
+
+            Add: $("#YorumYap").click(function () {
+                var id = '@Model.ID';
+                var yorumunuz = $('#Comments').val();
+                var degerler = $("form").serialize();
+                var veriler = { Comments: yorumunuz };
+              
+                $.ajax({
+                    type: "Post",
+                    dataType: "Json",
+                    data: degerler, veriler,
+                    url: "@Url.Action("CommentAdd", "Home")/" + id,
+                    success: function (response) {
+                        $('#Comments').val("");
+                            $("#AppendComment").html(response);
+                        $.BlogApp.List(response);
+                    }
+                })
+            }), 
+
+            PageReadNumber:   $(document).ready(function () {
+                var id = '@Model.ID';
+                var Reply = { id: id }
+                 $.ajax({
+                   url: "/Home/ReadNumber/",
+                   data: Reply,
+                   dataType:"JSON",
+                   type: "POST"
+                   });
+              }),
+
+            List: function (response) {
+                var id = '@Model.ID';
+                $.ajax({
+                type: "GET",
+                    dataType: "JSON",
+                    url: "@Url.Action("CommentList", "Home")/" + id,
+                    success: function (response) {
+                        var count = Object.keys(response).length;
+                        if (response != null) {
+                        $.each(response, function (key, item) {
+                            $("#AppendComment").append(`<img class='d-flex mr-3 rounded-circle' src='${item.ImagePath}' width='50' height='50'  alt=''><div class='media-body'><h5 class='mt-0'> ${item.AppUserName}</h5>${item.Comments}<br /> <hr /> <input style="visibility:hidden" ${item.BlogID}/> </div>`)
+                        })
+                    }
+                }
+                })
+             }
+        }
+    })
+   
+</script>

@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Areas/Article/Views/Shared/_Layout.cshtml";
+}
+
+@model FinalProject.Dto.DTO.BlogDTO.BlogDetail
+<div>
+    <h4>Kullanıcı Detayları</h4>
+    <hr />
+    <label style="margin-left:180px;">
+        Anasayfa Fotoğrafı
+    </label>
+    <dl class="dl-horizontal">
+
+        <content>
+            <img src="@Model.Image" style="display:block; margin-left:180px;" height="150" />
+        </content>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(model => model.Header)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Header)
+        </dd>
+        <br />
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+
+        <dd>
+            @Html.Raw(Model.Content)
+
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(x => x.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(x => x.Confirmation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Confirmation)
+        </dd>
+        <br />
+        <dt>
+            @Html.DisplayNameFor(x => x.Homepage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Homepage)
+        </dd>
+        <br />
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Update", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "List")
+</p>

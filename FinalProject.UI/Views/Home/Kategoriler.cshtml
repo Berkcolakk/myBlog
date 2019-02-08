@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "Kategoriler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model  IEnumerable< FinalProject.Dto.DTO.CategoryDTO.CategoryList>
+
+
+<div class="col-md-9">
+    <div class="col-md-12 page-body">
+        <div class="row">
+            <div class="col-md-12 content-page">
+                @foreach (var item in Model)
+                {
+                    <!-- Blog Post Start -->
+                <div class="col-md-12 blog-post">
+                   <a href="/Home/BlogCatList/@item.ID"><h4 class="fa fa-product-hunt">  @item.Name</h4></a>
+
+                </div>
+                }
+                <div class="col-md-12 text-center">
+                    <a href="javascript:void(0)" id="load-more-post" class="load-more-button">Load</a>
+                    <div id="post-end-message"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+
+</div>

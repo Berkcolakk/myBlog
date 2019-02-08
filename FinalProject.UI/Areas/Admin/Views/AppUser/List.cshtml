@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<FinalProject.Dto.DTO.AppUserDTO.AppUserList>
+<h2>Kullanıcı Listesi</h2>
+<hr />
+<p>
+    @Html.ActionLink("Kullanıcı Ekle", "Add", null, new { @class = "btn btn-primary" })
+</p>
+<hr />
+<table class="table table-bordered table-hover table-striped">
+    <tr>
+        <th style="width:40%;">
+            Ad
+        </th>
+        <th style="width:40%;">
+            Soyad
+        </th>
+        <th style="width:40%;">
+            Kullanıcı Adı
+        </th>
+        <th style="width:16%;">
+            Şifre
+        </th>
+        <th style="width:40%;">
+            E-Mail
+        </th>
+        <th style="width:40%;">
+            Eklenme Tarihi
+        </th>
+        <th style="width:40%;">
+            Güncellenme Tarihi
+        </th>
+        <th style="width:40%;">
+            Son Giriş
+        </th>
+        <th style="width:16%;">
+            Fotoğraf
+        </th>
+        <th style="width:16%;">
+            Roller
+        </th>
+        <th style="width:150px;"></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+    <tr>
+        <td>
+            @item.Name
+        </td>
+        <td>
+            @item.LastName
+        </td>
+        <td>
+            @item.UserName
+        </td>
+        <td>
+            @item.Password
+        </td>
+        <td>
+            @item.Email
+        </td>
+        <td>
+            @item.CreatedDate.ToShortDateString()
+        </td>
+        <td>
+            @item.ModifiedDate.ToShortDateString()
+        </td>
+        <td>
+            @item.LastLogin.ToShortDateString()
+        </td>
+        <td>
+            @item.ImagePath
+        </td>
+        <td>
+            @item.Role
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Update", new { id = item.ID }, new { @class = "btn btn-warning btn-xs" })
+            @Html.ActionLink("Roles ", "Roles", new { id = item.ID }, new { @class = "btn btn-success btn-xs" })
+            @Html.ActionLink("Details", "Detail", new { id = item.ID }, new { @class = "btn btn-primary btn-xs" })
+            @Html.ActionLink("Delete", "Delete", new { id = item.ID }, new { @class = "btn btn-danger btn-xs" })
+        </td>
+    </tr>
+    }
+</table>
+<div class="pagedList">
+    @Html.PagedListPager(Model, page => Url.Action("List", "AppUser", new { page }), PagedListRenderOptions.TwitterBootstrapPager)
+    </div>

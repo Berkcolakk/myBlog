@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "CategoryList";
+    Layout = "~/Areas/Article/Views/Shared/_Layout.cshtml";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<FinalProject.Dto.DTO.CategoryDTO.CategoryList>
+
+<h2>Kategori Listesi</h2>
+<hr />
+<p>
+    @Html.ActionLink("Kategori Ekle", "Add", null, new { @class = "btn btn-primary" })
+</p>
+<hr />
+
+<table class="table table-bordered table-hover table-striped">
+    <tr>
+        <th style="width:70%;">
+            Ad
+        </th>
+        <th style="width:70%;">
+            Açıklama
+        </th>
+        <th style="width:70%;">
+            Eklenme Tarihi
+        </th>
+        <th style="width:70%;">
+            Güncellenme Tarihi
+        </th>
+        <th style="width:70%;">
+            Blog Sayısı
+        </th>
+        <th style="width:150px;"></th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.Description
+            </td>
+            <td>
+                @item.CreatedDate
+            </td>
+            <td>
+                @item.ModifiedDate
+            </td>
+            <td>
+                @item.BlogSayisi
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "Update", new { id = item.ID }, new { @class = "btn btn-warning btn-xs" })
+                @Html.ActionLink("Details", "Detail", new { id = item.ID }, new { @class = "btn btn-primary btn-xs" })
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID }, new { @class = "btn btn-danger btn-xs" })
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="pagedList">
+    @Html.PagedListPager(Model, page => Url.Action("CategoryList", "Category", new { page }), PagedListRenderOptions.TwitterBootstrapPager)
+</div>
